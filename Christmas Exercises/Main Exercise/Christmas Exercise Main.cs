@@ -87,7 +87,6 @@ public class Program
 		brenna.TellUsAboutYourself();
 		bono.TellUsAboutYourself();
 		bernadette.TellUsAboutYourself();
-
 	}
 }
 
@@ -155,7 +154,6 @@ public class Santa
 		}
 		return null;
 	}***/
-
 }
 
 
@@ -203,7 +201,7 @@ public class Child
 		{
 			adjective = "nice";
 		}
-		
+
 		if (_nice == false)
 		{
 			adjective = "naughty";
