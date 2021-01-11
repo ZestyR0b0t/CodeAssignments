@@ -1,0 +1,4 @@
+This exercise is simple. Improve the existing code without changing the resultant behavior ("treat" still gives dogs a treat, "talk" still results in the same type of output)!
+Your goal in making the improvements is to make sure that if I want to add more dogs in the future, I don't need to change much code at all. Preferably, I should only need to add a single line of code.
+
+You may not edit anything in `Program.cs` or `Extensions.cs`, but feel free to create new classes and/or add/remove/edit anything in `ActionHandler.cs` (though you need to at least keep the HandleAction(action, target) method signature the same so that it can get called in Program.Main()).
