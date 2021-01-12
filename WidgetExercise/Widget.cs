@@ -4,13 +4,13 @@ namespace WidgetExercise
 {
     public class Widget
     {
-        private readonly string _desc; // combination of adjective and object name, ex. "slimy crystal"
-        private readonly string _adjective; // ex. "slimy"
-        private readonly string _objectName; // ex. "crystal"
+        private readonly string _desc;             // combination of adjective and object name, ex. "slimy crystal"
+        private readonly string _adjective;        // ex. "slimy"
+        private readonly string _objectName;       // ex. "crystal"
 
         public Widget(string adj, string obj)
         {
-            _desc = adj + " " + obj; // cache combination of adjective and object name as "description".
+            _desc = adj + " " + obj;               // cache combination of adjective and object name as "description".
             _adjective = adj;
             _objectName = obj;
         }
@@ -20,6 +20,19 @@ namespace WidgetExercise
             return _desc;
         }
 
-        // TODO: Add whatever you'd like to this class, Ryan!
+        public string GetAdjective()
+        {
+            return _adjective;
+        }
+
+        public string GetObjectName()
+        {
+            return _objectName;
+        }
+
+        public void PrintWidgetDesc(Widget widget)
+        {
+            Console.WriteLine($" That {widget._objectName} is {widget._adjective}");
+        }
     }
 }

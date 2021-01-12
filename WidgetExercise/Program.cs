@@ -48,15 +48,23 @@ namespace WidgetExercise
 
         public static void OnInvestigateWidget(string widgetDesc, List<Widget> widgets)
         {
-            // "widgetDesc" will be the words the user typed in after the word "investigate". It may or may not match one
-            // of our valid widgets.
+            foreach (Widget widget in widgets)
+            {
+                if (widget.GetDescription().Contains(widgetDesc))
+                {
+                    widget.PrintWidgetDesc(widget);
+                    return;
+                }
 
-            // "widgets" is the list of all valid widgets.
-
-            // TODO: Add logic in here, Ryan!
+                if (widget.GetDescription().Contains(widgetDesc) == false)
+                {
+                    OnInvalidWidget(widgetDesc);
+                    return;
+                }
+            }
         }
 
-        public void OnInvalidWidget(string widgetDesc)
+        public static void OnInvalidWidget(string widgetDesc)
         {
             Console.WriteLine($"There is no {widgetDesc} to investigate.");
         }
