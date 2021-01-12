@@ -55,13 +55,8 @@ namespace WidgetExercise
                     widget.PrintWidgetDesc(widget);
                     return;
                 }
-
-                if (widget.GetDescription().Contains(widgetDesc) == false)
-                {
-                    OnInvalidWidget(widgetDesc);
-                    return;
-                }
             }
+            OnInvalidWidget(widgetDesc);
         }
 
         public static void OnInvalidWidget(string widgetDesc)
