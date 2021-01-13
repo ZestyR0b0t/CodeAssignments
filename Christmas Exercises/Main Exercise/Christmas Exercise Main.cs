@@ -22,11 +22,15 @@ public class Program
 		
 		santa.CraftGiftsFor(childrenOfTheWorld);
 		santa.GiveGiftsTo(childrenOfTheWorld);
-		beth.TellUsAboutYourself();
-		billy.TellUsAboutYourself();
-		brenna.TellUsAboutYourself();
-		bono.TellUsAboutYourself();
-		bernadette.TellUsAboutYourself();
+		foreach (Child name in childrenOfTheWorld)
+		{
+			name.TellUsAboutYourself();
+		} 
+		//beth.TellUsAboutYourself();
+		//billy.TellUsAboutYourself();
+		//brenna.TellUsAboutYourself();
+		//bono.TellUsAboutYourself();
+		//bernadette.TellUsAboutYourself();
 	}
 }
 
@@ -41,7 +45,7 @@ public class Santa
 	{
 
 	}
-	public Gift CraftGiftsFor(List<Child> argListOfChildren)
+	public void CraftGiftsFor(List<Child> argListOfChildren)
 	{
 		foreach (Child name in argListOfChildren)
 		{
@@ -55,7 +59,6 @@ public class Santa
 				bagOfCoal.Add(new Gift("coal"));
 			}
 		}
-		return null;
 	}
 	public Gift PullGift(bool childIs)
 	{
@@ -132,10 +135,9 @@ public class Child
 	{
 		return _nice;
 	}
-	public Gift ReciveGift(Gift type)
+	public void ReciveGift(Gift type)
 	{
 		stocking.Add(type);
-		return null;
 	}
 	public void TellUsAboutYourself()
 	{
@@ -155,7 +157,7 @@ public class Child
 
 
 
-/***
+        /***
 		 * EXERCISE: CHRISTMAS SPECIAL!!!!
 		 * 
 		 * Santa is a bit under-the-weather this year, unfortunately, and Tim Allen isn't available to cover for him.
