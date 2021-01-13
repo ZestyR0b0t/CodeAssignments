@@ -30,9 +30,9 @@ namespace WidgetExercise
             return _objectName;
         }
 
-        public void PrintWidgetDesc(Widget widget)
+        public void PrintWidgetDesc()
         {
-            Console.WriteLine($" That {widget._objectName} is {widget._adjective}");
+            Console.WriteLine($" That {GetObjectName()} is {GetAdjective()}");
         }
     }
 }

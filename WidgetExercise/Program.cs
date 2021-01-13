@@ -52,7 +52,7 @@ namespace WidgetExercise
             {
                 if (widget.GetDescription().Contains(widgetDesc))
                 {
-                    widget.PrintWidgetDesc(widget);
+                    widget.PrintWidgetDesc();
                     return;
                 }
             }
