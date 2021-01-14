@@ -12,7 +12,6 @@ namespace DryExercise01
             new Dog("Spot", false),
             new Dog("Lassie", false)
         };
-        
         private bool _personSaidTreat; 
         private Dog _dog; 
 
@@ -23,25 +22,24 @@ namespace DryExercise01
                 if (_personSaidTreat)
                 {
                     _personSaidTreat = false;
-                    if (Dog().HasTreat())
+                    if (_dog.HasTreat())
                     {
-                        Dog().AlreadyHasTreat();
+                        _dog.AlreadyHasTreat();
                         return;
                     }
-                    Dog().GiveATreat();
+                    _dog.GiveATreat();
                 }
                 else
                 {
-                    if (Dog().HasTreat())
+                    if (_dog.HasTreat())
                     {
-                        Dog().DogBarks();
+                        _dog.DogBarks();
                         return;
                     }
-                    Dog().BarksForTreat();
+                    _dog.BarksForTreat();
                 }
             }
         }
-
         public bool InputIsValid(string action, string target)
         {
             if (action.EqualsIgnoreCase("treat"))
@@ -72,10 +70,6 @@ namespace DryExercise01
             Console.WriteLine($"You can't {action} right now.");
             return false;
         }
-        public Dog Dog()
-        {
-            return _dog;
-        } 
     }
 
     public class Dog
