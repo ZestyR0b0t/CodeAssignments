@@ -19,10 +19,11 @@ namespace DryExercise01
         {
             if (InputIsValid(action, target))
             {
+                bool HasTreat = _dog.HasTreat();
                 if (_personSaidTreat)
                 {
                     _personSaidTreat = false;
-                    if (_dog.HasTreat())
+                    if (HasTreat)
                     {
                         _dog.AlreadyHasTreat();
                         return;
@@ -31,7 +32,7 @@ namespace DryExercise01
                 }
                 else
                 {
-                    if (_dog.HasTreat())
+                    if (HasTreat)
                     {
                         _dog.DogBarks();
                         return;
