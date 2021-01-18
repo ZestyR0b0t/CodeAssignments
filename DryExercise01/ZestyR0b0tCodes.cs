@@ -19,11 +19,10 @@ namespace DryExercise01
         {
             if (InputIsValid(action, target))
             {
-                bool HasTreat = _dog.HasTreat();
                 if (_personSaidTreat)
                 {
                     _personSaidTreat = false;
-                    if (HasTreat)
+                    if (_dog.HasTreat())
                     {
                         _dog.AlreadyHasTreat();
                         return;
@@ -32,7 +31,7 @@ namespace DryExercise01
                 }
                 else
                 {
-                    if (HasTreat)
+                    if (_dog.HasTreat())
                     {
                         _dog.DogBarks();
                         return;
@@ -48,10 +47,12 @@ namespace DryExercise01
                 _personSaidTreat = true;
 
                 foreach (Dog dog in Dogs)
-                if (target.EqualsIgnoreCase(dog.GetDogName()))
                 {
-                    _dog = dog;
-                    return true; 
+                    if (target.EqualsIgnoreCase(dog.GetDogName()))
+                    {
+                        _dog = dog;
+                        return true; 
+                    }
                 }
                 Console.WriteLine($"There is no dog named {target}!");
                 return false;
@@ -60,10 +61,12 @@ namespace DryExercise01
             if(action.EqualsIgnoreCase("talk"))
             {
                 foreach (Dog dog in Dogs)
-                if (target.EqualsIgnoreCase(dog.GetDogName()))
                 {
-                    _dog = dog;
-                    return true; 
+                    if (target.EqualsIgnoreCase(dog.GetDogName()))
+                    {
+                        _dog = dog;
+                        return true; 
+                    }
                 }
                 Console.WriteLine($"There is no dog named {target}!");
                 return false;
@@ -92,10 +95,6 @@ namespace DryExercise01
             return _hasTreat;
         }
 
-        public void InvalidName()
-        {
-            Console.WriteLine($"There is no dog named {GetDogName()}.");
-        }
         public void AlreadyHasTreat()
         {
             Console.WriteLine($"{GetDogName()} already has a treat!");
