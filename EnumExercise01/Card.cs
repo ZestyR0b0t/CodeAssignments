@@ -1,9 +1,49 @@
-using System;
-
 namespace EnumExercise01
 {
     public class Card
     {
+        public enum Ranks
+        {
+            Two,
+            Three,
+            Four, 
+            Five, 
+            Six,
+            Seven,
+            Eight,
+            Nine,
+            Ten,
+            Jack,
+            Queen,
+            King,
+            Ace
+        }
+        public enum Suits
+        {
+            Clubs,
+            Diamonds,
+            Hearts,
+            Spades
+        }
+        private readonly Ranks _rank;
+        private readonly Suits _suit;
+
+        public Card(Ranks rank, Suits suit)
+        {
+            _rank = rank;
+            _suit = suit;
+        }
+        public Ranks GetRank()
+        {
+            return _rank; 
+        }
+        public Suits GetSuit()
+        {
+            return _suit; 
+        }
+    }
+}
+
         // TODO: Fill out this class!
 
         // TODO: Add enums for rank and suit! You can define enums right in this class, if you want them to be "paired" (associated) with the class itself.
@@ -12,5 +52,3 @@ namespace EnumExercise01
 
         // Valid Ranks: Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace
         // Valid Suits: Clubs, Diamonds, Hearts, Spades
-    }
-}
