@@ -5,10 +5,10 @@ namespace InheritanceExercise01
     public class Account
     {
         private readonly string _owner;
-        private readonly int _accountNo;
+        private readonly string _accountNo;
         private double _balance;
 
-        public Account(string owner, int accountNo, double initialDeposit)
+        public Account(string owner, string accountNo, double initialDeposit)
         {
             _owner = owner;
             _accountNo = accountNo;
@@ -32,7 +32,7 @@ namespace InheritanceExercise01
             if (_balance >= amount)
             {
                 _balance = _balance - amount;
-                Console.WriteLine($"\n Here is ${amount} in small bills.");
+                Console.WriteLine($"\n ${amount} has been withdrawn from your account.");
                 return;
             }
             Console.WriteLine("Insufficient funds.");
@@ -40,7 +40,7 @@ namespace InheritanceExercise01
         public void DepositFunds( double amount)
         {
             _balance = _balance + amount;
-            Console.WriteLine($"\n Your deposit of ${amount} is complete.");
+            Console.WriteLine($"{amount} has been deposited to your account.");
             return;
         }
     }
@@ -49,7 +49,7 @@ namespace InheritanceExercise01
 
     public class Checking : Account
     {
-        public Checking(string owner, int accountNo, double initialDeposit) 
+        public Checking(string owner, string accountNo, double initialDeposit) 
             : base(owner, accountNo, initialDeposit)
         {
 
@@ -67,7 +67,7 @@ namespace InheritanceExercise01
     {
         private double _interestRate; 
 
-        public Savings(string owner, int accountNo, double initialDeposit, double rate) 
+        public Savings(string owner, string accountNo, double initialDeposit, double rate) 
             : base(owner, accountNo, initialDeposit)
         {
             _interestRate = rate;

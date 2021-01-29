@@ -13,7 +13,6 @@ namespace InheritanceExercise01
             _amount = amount;
             _accountNo = accountNo;
             _recipientName = recipient;
-
         }
 
         public void GetCheckInfo()
