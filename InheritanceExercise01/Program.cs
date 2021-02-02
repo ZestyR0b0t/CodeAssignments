@@ -6,7 +6,10 @@ namespace InheritanceExercise01
     {
         static void Main(string[] args)
         {   
-            //Use for testing
+            Random rnd = new Random();
+            Bank bank = new Bank();
+
+            bank.AssistCustomer(rnd);
         }
     }
 }
