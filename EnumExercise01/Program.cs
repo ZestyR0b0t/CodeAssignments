@@ -66,3 +66,4 @@ namespace EnumExercise01
             //   here's a snippet link that shows how how to use it: https://dotnetfiddle.net/O4EhwA
             //   I'll explain that weird syntax to you in-person at some point. Here's the official documentation if you'd like more info: https://docs.microsoft.com/en-us/dotnet/api/system.enum.tryparse?view=net-5.0#System_Enum_TryParse__1_System_String_System_Boolean___0__
         
+            // Aside from checking validity, another perk to enums is: If one wants to change the name of an Enum and it is used many times throughout the program, you can change one instance then use the IDE to change the rest. Very Efficient!! 
