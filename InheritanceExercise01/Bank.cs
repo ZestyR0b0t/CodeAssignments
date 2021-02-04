@@ -36,10 +36,8 @@ namespace InheritanceExercise01
             "Quit"
         };
         private Dictionary<string, Account> ActiveAccounts = new Dictionary<string, Account>();
-        private Dictionary<string, Checking> ActiveCheckingAccounts = new Dictionary<string, Checking>();
-        private Dictionary<string, Savings> ActiveSavingsAccounts = new Dictionary<string, Savings>();
         private bool _greetedCustomer = false; 
-        private bool _validRequest;
+        
         
         public Bank()
         {
@@ -82,50 +80,44 @@ namespace InheritanceExercise01
         private Request ParseUserRequest(string input)
         {
             string[] parsedRequest = input.Split(" ", 2, StringSplitOptions.TrimEntries);
-            string serviceRequested = parsedRequest[0];
-            string productRequested = "unknown";
             
-            if (serviceRequested.EqualsIgnoreCase("quit"))
-            {
-                Console.WriteLine("\n Have a nice day!");
-                Environment.Exit(0);
-                return null;
-            }
-            
-            if (parsedRequest.Length == 2)
-            {
-                productRequested = parsedRequest[1];
-            }
-
             Bank.Services service;
-            if (Enum.TryParse<Bank.Services>(serviceRequested, true, out service) == false)
+            if (Enum.TryParse<Bank.Services>(parsedRequest[0], true, out service) == false)
             {
-                Console.WriteLine($"\n ** {serviceRequested} is not a valid service. **");
-                _validRequest = false;
+                Console.WriteLine($"\n ** {parsedRequest[0]} is not a valid service. **");
                 return null;
             }
 
             Bank.Products product;
-            if (Enum.TryParse<Bank.Products>(productRequested, true, out product) == false)
+            if (parsedRequest.Length < 2)
             {
-                Console.WriteLine($"\n ** {productRequested} is not a valid product. **");
-                _validRequest = false;
+                product = Bank.Products.Unknown;
+            }
+            else if (Enum.TryParse<Bank.Products>(parsedRequest[1], true, out product) == false)
+            {
+                Console.WriteLine($"\n ** {parsedRequest[1]} is not a valid product. **");
                 return null;
             }
 
             Request request = new Request(service, product);
-            _validRequest = true;
             return request;
         }
         private void CompleteService(Request request, Random rnd)
         {
-            if (_validRequest == false)
+            if (request == null)
             {
                 return;
             }
 
             Services service = request.GetServiceRequest();
             Products product = request.GetproductRequest();
+
+            if (service == Bank.Services.Quit)
+            {
+                Console.WriteLine("\n Have a nice day!");
+                Environment.Exit(0);
+                return;
+            }
 
             if (service == Services.Create)
             {
@@ -140,7 +132,6 @@ namespace InheritanceExercise01
                     string number = Convert.ToString(rnd.Next(1000, 1999));
 
                     Checking checking = new Checking(checkingInfo[0], number, deposit);
-                    ActiveCheckingAccounts[number] = checking;
                     ActiveAccounts[number] = checking;
                     Console.WriteLine($"\n Your new checking account number is {number}");
                     return;
@@ -159,11 +150,12 @@ namespace InheritanceExercise01
                     string number = Convert.ToString(rnd.Next(2000, 2999));
 
                     Savings savings = new Savings(savingsInfo[0], number, deposit, rate);
-                    ActiveSavingsAccounts[number] = savings;
                     ActiveAccounts[number] = savings;
                     Console.WriteLine($"\n Your new savings account number is {number}");
                     return;
                 }
+                Console.WriteLine("\n We can only create checking or savings accounts at this time.");
+                return;
             }
 
 
@@ -199,15 +191,15 @@ namespace InheritanceExercise01
                 return;
             }
 
-            if (service == Services.View)
+            if (service == Services.View && product == Products.Balance)
             {
                 ActiveAccounts[accountNo].ShowBalance();
                 return;
             }
 
-            if (service == Services.Write)
+            if (service == Services.Write && product == Products.Check)
             {
-                if (ActiveCheckingAccounts.ContainsKey(accountNo))
+                if (ActiveAccounts[accountNo] is Checking)
                 {
                     Console.WriteLine("\n Please provide the following: Recipient Name | Amount");
                     string [] checkInfo = GetUserInput().Split("|", StringSplitOptions.TrimEntries);
@@ -216,7 +208,7 @@ namespace InheritanceExercise01
                     double amount;
                     Double.TryParse(checkInfo[1], out amount);
 
-                    Checking checking = ActiveCheckingAccounts[accountNo];
+                    Checking checking = (Checking) ActiveAccounts[accountNo];
                     checking.WriteCheck(amount, checking.GetAccountNo(), name).GetCheckInfo();
                     return;
                 }
@@ -224,11 +216,12 @@ namespace InheritanceExercise01
                 return;
             }
 
-            if (service == Services.Apply)
+            if (service == Services.Apply && product == Products.Interest)
             {
-                if (ActiveSavingsAccounts.ContainsKey(accountNo))
+                if (ActiveAccounts[accountNo] is Savings)
                 {
-                    ActiveSavingsAccounts[accountNo].ApplyInterestAnnually();
+                    Savings savings = (Savings) ActiveAccounts[accountNo];
+                    savings.ApplyInterestAnnually();
                     return;
                 }
                 Console.WriteLine("\n You cannot apply interest to this account.");

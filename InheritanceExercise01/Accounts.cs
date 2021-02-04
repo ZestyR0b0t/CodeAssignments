@@ -40,7 +40,7 @@ namespace InheritanceExercise01
         public void DepositFunds( double amount)
         {
             _balance = _balance + amount;
-            Console.WriteLine($"\n {amount} has been deposited to your account.");
+            Console.WriteLine($"\n ${amount} has been deposited to your account.");
             return;
         }
     }
