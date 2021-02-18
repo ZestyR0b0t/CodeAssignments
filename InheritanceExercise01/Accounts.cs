@@ -2,7 +2,7 @@ using System;
 
 namespace InheritanceExercise01
 {
-    public class Account
+    public abstract class Account
     {
         private readonly string _owner;
         private readonly string _accountNo;
@@ -23,11 +23,15 @@ namespace InheritanceExercise01
         {
             return _balance;
         }
+        public void SetBalance(double newBalance)
+        {
+            _balance = newBalance;
+        }
         public void ShowBalance()
         {
             Console.WriteLine($"\n Current balance = ${GetBalance()}");
         }
-        public void WithdrawFunds(double amount)
+        public virtual void WithdrawFunds(double amount)
         {
             if (_balance >= amount)
             {
@@ -77,6 +81,18 @@ namespace InheritanceExercise01
         public void ApplyInterestAnnually()
         {
             DepositFunds(GetBalance() * _interestRate);
+        }
+
+        public override void WithdrawFunds(double amount)
+        {
+            double balance = GetBalance();
+            if (balance >= amount + 5)
+            {
+                SetBalance(balance - (amount + 5));
+                Console.WriteLine($"\n ${amount} has been withdrawn from your account.");
+                return;
+            }
+            Console.WriteLine("Insufficient funds.");
         }
     }
 }

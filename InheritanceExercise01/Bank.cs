@@ -212,6 +212,7 @@ namespace InheritanceExercise01
                     checking.WriteCheck(amount, checking.GetAccountNo(), name).GetCheckInfo();
                     return;
                 }
+                
                 Console.WriteLine("\n You cannot write a check from this account.");
                 return;
             }
