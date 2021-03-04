@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace Linked_List_Exercise
 {
-    class List
+    class LList
     {
         private List<Node> _list;
 
-        public List(int data)
+        public LList()
         {
             _list = new List<Node>
             {
-                new Node(data)
+                new Node()
                 {
                     Reference = 1
                 }
@@ -25,7 +25,7 @@ namespace Linked_List_Exercise
                 node.Reference += 1;
             }
            
-            _list.Insert(0, new Node(toAdd) { Reference = 1 });
+            _list.Insert(0, new Node() { Reference = 1, Data = toAdd });
 
             Node lastNode = _list[_list.Count - 1];
             lastNode.Reference = 0;
@@ -37,7 +37,7 @@ namespace Linked_List_Exercise
             Node lastNode = _list[_list.Count - 1];
             lastNode.Reference = _list.Count + 1;
 
-            _list.Add(new Node(toAdd) { Reference = 0 });
+            _list.Add(new Node() { Reference = 0, Data = toAdd });
         }
 
         public void Remove(int toRemove)
