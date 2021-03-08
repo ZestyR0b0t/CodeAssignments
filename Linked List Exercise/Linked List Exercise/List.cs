@@ -1,108 +1,109 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace Linked_List_Exercise
-{
+{ 
     class LList
     {
-        private List<Node> _list;
+        public Node head = new Node(null);
 
-        public LList()
-        {
-            _list = new List<Node>
-            {
-                new Node()
-                {
-                    Reference = 1
-                }
-            };
-        }
 
         public void AddFirst(int toAdd)
         {
-            foreach (Node node in _list)
+            if (head.Reference != null)
             {
-                node.Reference += 1;
+                Node originalHeadReference = head.Reference;
+                head.Reference = new Node(toAdd)
+                {
+                    Reference = originalHeadReference
+                };
             }
-           
-            _list.Insert(0, new Node() { Reference = 1, Data = toAdd });
 
-            Node lastNode = _list[_list.Count - 1];
-            lastNode.Reference = 0;
+            else
+            {
+                head.Reference = new Node(toAdd);
+            }
         }
-
 
         public void AddLast(int toAdd)
         {
-            Node lastNode = _list[_list.Count - 1];
-            lastNode.Reference = _list.Count + 1;
+            Node currentNode = head;
 
-            _list.Add(new Node() { Reference = 0, Data = toAdd });
+            while (true)
+            {
+                if (currentNode.Reference == null)
+                {
+                    currentNode.Reference = new Node(toAdd);
+                    break;
+                }
+
+                currentNode = currentNode.Reference;
+            }
         }
 
         public void Remove(int toRemove)
         {
-            int removedReference = 0;
-            foreach (Node node in _list)
-            {
-                if (node.Data == toRemove)
-                {
-                    removedReference = node.Reference;
-                    _list.Remove(_list[removedReference - 1]);
-                }
-            }
+            Node currentNode = head;
+            Node previousNode = head;
 
-            foreach (Node node in _list)
+            while (true)
             {
-                if (node.Reference != 0 && node.Reference > removedReference)
+                if (currentNode.Data == toRemove && currentNode.Reference != null)
                 {
-                    node.Reference -= 1;
+                    previousNode.Reference = currentNode.Reference;
+                    break;
                 }
-            }
 
-            if (removedReference != 0)
-            {
-                Node lastNode = _list[_list.Count - 1];
-                lastNode.Reference = 0;
+                if (currentNode.Data == toRemove && currentNode.Reference == null)
+                {
+                    previousNode.Reference = null;
+                    break;
+                }
+
+                previousNode = currentNode;
+                currentNode = currentNode.Reference;
             }
         }
 
         public void RemoveFirst()
         {
-            if (_list.Count < 1)
-            {
-                throw new InvalidOperationException("The list is empty!");
-            }
-
-            _list.RemoveAt(0);
-
-            foreach (Node node in _list)
-            {
-                if (node.Reference != 0)
-                {
-                    node.Reference -= 1;
-                }
-            }
+            head.Reference = head.Reference.Reference;
         }
 
         public void RemoveLast()
         {
-            if (_list.Count < 1)
+            Node currentNode = head;
+            Node previousNode = head;
+
+            while (true)
             {
-                throw new InvalidOperationException("The list is empty!");
+                if (currentNode.Reference != null)
+                {
+                    previousNode = currentNode;
+                    currentNode = currentNode.Reference;
+                }
+
+                else
+                {
+                    previousNode.Reference = null;
+                    break;
+                }
             }
-
-            _list.RemoveAt(_list.Count - 1);
-
-            Node lastNode = _list[_list.Count - 1];
-            lastNode.Reference = 0;
         }
 
         public void PrintAll()
         {
-            foreach (Node node in _list)
+            Node currentNode = head;
+
+            while (true)
             {
-                Console.WriteLine(node.Data);
+                currentNode = currentNode.Reference;
+                Console.Write(currentNode.Data);
+
+                if (currentNode.Reference == null)
+                {
+                    break;
+                }
             }
         }
     }
