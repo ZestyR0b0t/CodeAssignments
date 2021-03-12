@@ -1,40 +1,104 @@
 ﻿using System;
-// DO NOT USE System.Collections.Generic OR System.Collections IN HERE!!!
+
 
 namespace DataStructures
 {
-    // Represents a simple last-in-first-out (LIFO) collection of items.
+    
     class Stack
-    {
-        // Gets how many elements are on the stack.
+    {   
+        public string[] StackArray { get; private set; }
+        
         public int Count { get; private set; }
 
-        // Returns the item on the top of the stack without removing it.
+        
         public string Peek()
         {
-            return null; // TODO: Implement this
+            if (Count < 1)
+            {
+                throw new IndexOutOfRangeException("This Stack is empty.");
+            }
+
+            return StackArray[Count + 1];
         }
 
-        // Removes and returns the object at the top of the stack.
+        
         public string Pop()
         {
-            return null; // TODO: Implement this
+            if (Count == 0)
+            {
+                throw new IndexOutOfRangeException("This Queue is empty.");
+            }
+
+            string topItem = StackArray[Count + 1];
+
+            if (Count > 1)
+            {
+                Count -= 1;
+
+                string[] newArray = new string[Count];
+
+                int index = 0;
+
+                foreach (string i in StackArray)
+                {
+                    if (Array.IndexOf(StackArray, i) != Count + 1)
+                    {
+                        newArray[index] = i;
+                        index++;
+                    }
+                }
+
+                StackArray = newArray;
+
+                return topItem;
+            }
+
+            else
+            {
+                StackArray[0] = null;
+                Count = 0;
+
+                return topItem;
+            }
         }
 
-        // Inserts the given item at the top of the Stack.
+        
         public void Push(string item)
         {
-            // TODO: Implement this
+            if (Count == 0)
+            {
+                StackArray[0] = item;
+                Count = 1;
+
+                return;
+            }
+
+            Count += 1;
+
+            string[] newArray = new string[Count];
+
+            Array.Copy(StackArray, newArray, Count - 1);
+
+            newArray[Count] = item;
+
+            StackArray = newArray;
         }
 
-        // Prints out all items in the stack, as a comma-separated list. The
-        // output should also include the words "[TOP]" and "[BOTTOM]" and the beginning/end (or vice-versa)
-        // to indicate the top and bottom of your stack. Which one comes first depends on how you set up
-        // your stack.
-        // (ex. where 4 was the last item pushed onto the stack: [BOTTOM] 1, 2, 3, 4 [TOP])
+
         public void PrintAll()
         {
-            // TODO: Implement this
+            Console.WriteLine("[TOP]");
+
+            string[] newArray = new string[Count];
+            Array.Copy(StackArray, newArray, Count);
+            Array.Reverse(newArray);
+
+            foreach (string i in newArray)
+            {
+                Console.Write($" {i},");
+            }
+
+            Console.WriteLine(" [BOTTOM]");
         }
     }
 }
