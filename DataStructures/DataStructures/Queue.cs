@@ -1,39 +1,112 @@
 ﻿using System;
-// DO NOT USE System.Collections.Generic OR System.Collections IN HERE!!!
+
 
 namespace DataStructures
 {
     class Queue
     {
-        // Gets how many elements are in the queue.
+        public string[] QueueArray { get; private set; }
         public int Count { get; private set; }
 
-        // Returns the item at the beginning of the queue without removing it.
+        public Queue()
+        {
+            QueueArray = new string[1];
+            Count = 0;
+        }
+
+        
         public string Peek()
         {
-            return null; // TODO: Implement this
+            if (Count == 0)
+            {
+                throw new IndexOutOfRangeException("This Queue is empty.");
+            }
+
+            return QueueArray[0];
         }
 
-        // Removes and returns the item at the beginning of the queue.
+        
         public string Dequeue()
         {
-            return null; // TODO: Implement this
+            if (Count == 0)
+            {
+                throw new IndexOutOfRangeException("This Queue is empty.");
+            }
+
+            string firstItem = QueueArray[0];
+            
+            if (Count > 1)
+            {
+                Count -= 1;
+
+                string[] newArray = new string[Count];
+
+                int index = 0;
+
+                foreach (string i in QueueArray)
+                {
+                    if (Array.IndexOf(QueueArray, i) != 0)
+                    {
+                        newArray[index] = i;
+                        index++;
+                    }
+                }
+
+                QueueArray = newArray;
+
+                return firstItem;
+            }
+
+            else
+            {
+                QueueArray[0] = null;
+                Count = 0;
+
+                return firstItem;
+            }
         }
 
-        // 	Adds an item to the end of the queue.
+
         public void Enqueue(string item)
         {
-            // TODO: Implement this
+            if (Count == 0)
+            {
+                QueueArray[0] = item;
+                Count += 1;
+
+                return;
+            }
+
+            else
+            {
+                Count += 1;
+
+                string[] newArray = new string[Count];
+                int index = 0;
+
+                foreach (string i in QueueArray)
+                {
+                    newArray[index] = i;
+                    index++;
+                }
+
+                newArray[Count - 1] = item;
+
+                QueueArray = newArray;
+            }
         }
 
-        // Prints out all items in the queue, as a comma-separated list. The
-        // output should also include the words "[FRONT]" and "[BACK]" and the beginning/end (or vice-versa)
-        // to indicate the front and back of your queue. Which one comes first depends on how you set up
-        // your queue.
-        // (ex. where 4 was the last item enqueued: [FRONT] 1, 2, 3, 4 [BACK])
+
         public void PrintAll()
         {
-            // TODO: Implement this
+            Console.Write("[FRONT]");
+
+            foreach (string i in QueueArray)
+            {
+                Console.Write($" {i},");
+            }
+
+            Console.Write(" [BACK]");
         }
     }
 }
