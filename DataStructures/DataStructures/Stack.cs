@@ -3,49 +3,42 @@
 
 namespace DataStructures
 {
-    
-    class Stack
-    {   
-        public string[] StackArray { get; private set; }
+    class Stack<T>
+    {
+        public T[] StackArray { get; private set; } = new T[1];
         
         public int Count { get; private set; }
 
         
-        public string Peek()
+        public T Peek()
         {
             if (Count < 1)
             {
                 throw new IndexOutOfRangeException("This Stack is empty.");
             }
 
-            return StackArray[Count + 1];
+            return StackArray[Count - 1];
         }
 
         
-        public string Pop()
+        public T Pop()
         {
-            if (Count == 0)
+            if (Count < 1)
             {
-                throw new IndexOutOfRangeException("This Queue is empty.");
+                throw new IndexOutOfRangeException("This Stack is empty.");
             }
 
-            string topItem = StackArray[Count + 1];
+            T topItem = StackArray[Count - 1];
 
             if (Count > 1)
             {
                 Count -= 1;
 
-                string[] newArray = new string[Count];
+                T[] newArray = new T[Count];
 
-                int index = 0;
-
-                foreach (string i in StackArray)
+                for (int i = 0; i < Count; i++)
                 {
-                    if (Array.IndexOf(StackArray, i) != Count + 1)
-                    {
-                        newArray[index] = i;
-                        index++;
-                    }
+                    newArray[i] = StackArray[i];
                 }
 
                 StackArray = newArray;
@@ -55,7 +48,7 @@ namespace DataStructures
 
             else
             {
-                StackArray[0] = null;
+                StackArray[0] = default(T);
                 Count = 0;
 
                 return topItem;
@@ -63,7 +56,7 @@ namespace DataStructures
         }
 
         
-        public void Push(string item)
+        public void Push(T item)
         {
             if (Count == 0)
             {
@@ -75,11 +68,14 @@ namespace DataStructures
 
             Count += 1;
 
-            string[] newArray = new string[Count];
+            T[] newArray = new T[Count];
 
-            Array.Copy(StackArray, newArray, Count - 1);
+            for (int i = 0; i < Count - 1; i++)
+            {
+                newArray[i] = StackArray[i];
+            }
 
-            newArray[Count] = item;
+            newArray[Count - 1] = item;
 
             StackArray = newArray;
         }
@@ -87,18 +83,14 @@ namespace DataStructures
 
         public void PrintAll()
         {
-            Console.WriteLine("[TOP]");
+            Console.WriteLine("[TOP] ");
 
-            string[] newArray = new string[Count];
-            Array.Copy(StackArray, newArray, Count);
-            Array.Reverse(newArray);
-
-            foreach (string i in newArray)
+            for (int i = Count - 1; i >= 0; i--)
             {
-                Console.Write($" {i},");
+                Console.WriteLine($"{StackArray[i]}, ");
             }
 
-            Console.WriteLine(" [BOTTOM]");
+            Console.WriteLine("[BOTTOM]");
         }
     }
 }

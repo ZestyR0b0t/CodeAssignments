@@ -3,19 +3,18 @@
 
 namespace DataStructures
 {
-    class Queue
+    class Queue<T>
     {
-        public string[] QueueArray { get; private set; }
+        public T[] QueueArray { get; private set; }
         public int Count { get; private set; }
 
         public Queue()
         {
-            QueueArray = new string[1];
+            QueueArray = new T[1];
             Count = 0;
         }
-
         
-        public string Peek()
+        public T Peek()
         {
             if (Count == 0)
             {
@@ -26,30 +25,24 @@ namespace DataStructures
         }
 
         
-        public string Dequeue()
+        public T Dequeue()
         {
             if (Count == 0)
             {
                 throw new IndexOutOfRangeException("This Queue is empty.");
             }
 
-            string firstItem = QueueArray[0];
+            T firstItem = QueueArray[0];
             
             if (Count > 1)
             {
                 Count -= 1;
 
-                string[] newArray = new string[Count];
+                T[] newArray = new T[Count];
 
-                int index = 0;
-
-                foreach (string i in QueueArray)
+                for (int i = 0; i < Count; i++)
                 {
-                    if (Array.IndexOf(QueueArray, i) != 0)
-                    {
-                        newArray[index] = i;
-                        index++;
-                    }
+                    newArray[i] = QueueArray[i + 1];
                 }
 
                 QueueArray = newArray;
@@ -59,7 +52,7 @@ namespace DataStructures
 
             else
             {
-                QueueArray[0] = null;
+                QueueArray[0] = default(T);
                 Count = 0;
 
                 return firstItem;
@@ -67,7 +60,7 @@ namespace DataStructures
         }
 
 
-        public void Enqueue(string item)
+        public void Enqueue(T item)
         {
             if (Count == 0)
             {
@@ -81,17 +74,16 @@ namespace DataStructures
             {
                 Count += 1;
 
-                string[] newArray = new string[Count];
+                T[] newArray = new T[Count];
                 int index = 0;
 
-                foreach (string i in QueueArray)
+                foreach (T i in QueueArray)
                 {
                     newArray[index] = i;
                     index++;
                 }
 
                 newArray[Count - 1] = item;
-
                 QueueArray = newArray;
             }
         }
@@ -101,7 +93,7 @@ namespace DataStructures
         {
             Console.Write("[FRONT]");
 
-            foreach (string i in QueueArray)
+            foreach (T i in QueueArray)
             {
                 Console.Write($" {i},");
             }
