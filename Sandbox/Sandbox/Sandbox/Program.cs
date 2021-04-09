@@ -37,7 +37,7 @@ namespace Sandbox
 
             for (int i = 0; i < aList.Count; i++)
             {
-                if (aList[i].Equals(bList[i]))
+                if (aList[i].Equals(bList[i]) == false)
                 {
                     return false;
                 }
