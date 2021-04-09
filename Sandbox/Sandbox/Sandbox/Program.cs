@@ -7,27 +7,35 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            // Test list equality for lists of integers
+            List<int> intListA = new List<int>() { 1, 2 };
+            List<int> intListB = new List<int>() { 1, 2 };
 
-            List<int> listA = new List<int>();
-            List<int> listB = new List<int>();
+            bool areIntListsEqual = ListEquals(intListA, intListB);
+            Console.WriteLine("Are integer lists equal? " + areIntListsEqual);
 
-            listA.Add(1);
-            listA.Add(2);
+            // Test list equality for lists of People
+            Person bob1 = new Person("Bob Greene", 1975);
+            Person bob2 = new Person("Bob Greene", 1975);
 
-            listB.Add(1);
-            listB.Add(2);
-            CollectionEquals(listA, listB);
+            Person susan1 = new Person("Susan Smith", 1962);
+            Person susan2 = new Person("Susan Smith", 1962);
+
+            List<Person> personListA = new List<Person>() { bob1, susan1 };
+            List<Person> personListB = new List<Person>() { bob2, susan2 };
+
+            bool arePersonListsEqual = ListEquals(personListA, personListB);
+            Console.WriteLine("Are person lists equal? " + arePersonListsEqual);
         }
 
-        static bool CollectionEquals<T>(List<T> aList, List<T> bList) 
+        static bool ListEquals<T>(List<T> aList, List<T> bList) 
         {
             if (aList.Count != bList.Count)
             {
                 return false;
             }
 
-            for (int i = 0; i <= aList.Count; i++)
+            for (int i = 0; i < aList.Count; i++)
             {
                 if (aList[i].Equals(bList[i]))
                 {
