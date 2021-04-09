@@ -6,7 +6,6 @@ namespace DataStructures
     {
         static void Main(string[] args)
         {
-
             Stack<int> Attacks = new Stack<int>();
 
             Attacks.Push(1);

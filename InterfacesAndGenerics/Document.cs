@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace InterfacesAndGenerics
+namespace InterfacesAndGenerics 
 {
     // TODO: Add whatever methods/interface implementations you need to this class.
-    public class Document
+    public class Document : IGetAgeInDays
     {
         private readonly string _fileName;
         private readonly DateTime _createdTime;
@@ -13,5 +13,15 @@ namespace InterfacesAndGenerics
             _fileName = fileName;
             _createdTime = createdTime;
         }
+
+        public int GetAgeInDays()
+        {
+            DateTime rightNow = DateTime.Now;
+
+            TimeSpan totalAge = rightNow.Subtract(_createdTime);
+
+            return totalAge.Days;
+        }
+
     }
 }

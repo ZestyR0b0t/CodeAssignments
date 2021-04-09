@@ -32,13 +32,20 @@ namespace InterfacesAndGenerics
             Document docOld = new Document("older_doc.docx", new DateTime(1990, 12, 8));
             Document docNew = new Document("newer_doc.docx", new DateTime(2020, 1, 10));
 
-            Object[] list = new Object[] { finn, docOld, bertha, docNew }; // TODO: Change the type of this array so that the items in it are not "Object", and you don't have to do any casting to get the age.
-            uint[] agesInDays = new uint[list.Length];
+            // TODO: Change the type of this array so that the items in it are not "Object", and you don't have to do any casting to get the age.
+            IGetAgeInDays[] list = new IGetAgeInDays[] { finn, docOld, bertha, docNew }; 
+            
+            int[] agesInDays = new int[list.Length];
 
             // TODO: Populate the 'agesInDays' array with the age (in days) of each item in 'list'. Do NOT perform any type checking or casting, besides casting from a double to a uint.
+            for (int i = 0; i < list.Length; i ++)
+            {
+                agesInDays[i] = list[i].GetAgeInDays(); 
+            }
 
             // Printing out results...
             Console.WriteLine("\n--- RESULTS [TestBasicInterface] ---");
+            
             for (int i = 0; i < agesInDays.Length; i++)
             {
                 Console.WriteLine(agesInDays[i]);
@@ -53,14 +60,14 @@ namespace InterfacesAndGenerics
             Person finn = new Person("Finn", new DateTime(2015, 02, 14));
             Person bertha = new Person("Bertha", new DateTime(1934, 01, 23));
 
-            Person resultPerson = (Person)Utils.GetOlder(finn, bertha); // TODO: Cast to (Person) only necessary here with 'Object' return type for GetOlder(). Once you refactor method to be generic, remove this cast.
+            Person resultPerson = Utils.GetOlder(finn, bertha); // TODO: Cast to (Person) only necessary here with 'Object' return type for GetOlder(). Once you refactor method to be generic, remove this cast.
             Utils.Assert(resultPerson == bertha, "Bertha was not returned as the oldest person!"); // Checks whether your logic works!
 
             // Testing Utils.GetOlder() with Document class
             Document docOld = new Document("older_doc.docx", new DateTime(1996, 6, 9));
             Document docNew = new Document("newer_doc.docx", new DateTime(2020, 1, 10));
 
-            Document resultDoc = (Document)Utils.GetOlder(docOld, docNew); // TODO: Cast to (Document) only necessary here with 'Object' return type for GetOlder(). Once you refactor method to be generic, remove this cast.
+            Document resultDoc = Utils.GetOlder(docOld, docNew); // TODO: Cast to (Document) only necessary here with 'Object' return type for GetOlder(). Once you refactor method to be generic, remove this cast.
             Utils.Assert(resultDoc == docOld, "older_doc.docx was not returned as the oldest document!"); // Checks whether your logic works!
         }
 
