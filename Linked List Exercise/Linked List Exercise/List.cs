@@ -5,31 +5,34 @@ namespace Linked_List_Exercise
 { 
     class LList
     {
-        public Node head = new Node(null);
-
+        private Node _head = null;
 
         public void AddFirst(int toAdd)
         {
-            if (head.NextReference != null)
+            if (_head == null)
             {
-                Node originalHeadReference = head.NextReference;
-                head.NextReference = new Node(toAdd)
-                {
-                    NextReference = originalHeadReference
-                };
+                _head = new Node(toAdd);
+                return;
             }
 
-            else
+            Node originalHeadReference = _head;
+            _head = new Node(toAdd)
             {
-                head.NextReference = new Node(toAdd);
-            }
+                NextReference = originalHeadReference
+            };
         }
 
         public void AddLast(int toAdd)
         {
-            Node currentNode = head;
+            if (_head == null)
+            {
+                _head = new Node(toAdd);
+                return;
+            }
 
-            while (true)
+            Node currentNode = _head;
+
+            while(currentNode != null)
             {
                 if (currentNode.NextReference == null)
                 {
@@ -38,19 +41,33 @@ namespace Linked_List_Exercise
                 }
 
                 currentNode = currentNode.NextReference;
-            }
+            } 
         }
 
-        public void Remove(int toRemove)
+        public void RemoveFirstInstanceOf(int toRemove)
         {
-            Node currentNode = head;
-            Node previousNode = head;
+            if (_head == null)
+            {
+                return;
+            }
 
-            while (true)
+            Node currentNode = _head;
+            Node previousNode = _head;
+
+            while (currentNode != null)
             {
                 if (currentNode.Data == toRemove)
                 {
-                    previousNode.NextReference = currentNode.NextReference; 
+                    if (previousNode == currentNode)
+                    {
+                        // we're at the head... special case
+                        _head = currentNode.NextReference;
+                    }
+                    else
+                    {
+                        previousNode.NextReference = currentNode.NextReference;
+                    }
+
                     break;
                 }
 
@@ -61,43 +78,49 @@ namespace Linked_List_Exercise
 
         public void RemoveFirst()
         {
-            head.NextReference = head.NextReference.NextReference;
+            if (_head == null)
+            {
+                return;
+            }
+
+            _head = _head.NextReference;
         }
 
         public void RemoveLast()
         {
-            Node currentNode = head;
-            Node previousNode = head;
+            Node currentNode = _head;
+            Node previousNode = _head;
 
-            while (true)
+            while (currentNode != null)
             {
-                if (currentNode.NextReference != null)
+                if (currentNode.NextReference == null)
                 {
-                    previousNode = currentNode;
-                    currentNode = currentNode.NextReference;
-                }
+                    if (previousNode == currentNode)
+                    {
+                        // we're at the head... special case
+                        _head = null;
+                    }
+                    else
+                    {
+                        previousNode.NextReference = null;
+                    }
 
-                else
-                {
-                    previousNode.NextReference = null;
                     break;
                 }
+                
+                previousNode = currentNode;
+                currentNode = currentNode.NextReference;
             }
         }
 
         public void PrintAll()
         {
-            Node currentNode = head;
+            Node currentNode = _head;
 
-            while (true)
+            while (currentNode != null)
             {
-                currentNode = currentNode.NextReference;
                 Console.Write(currentNode.Data);
-
-                if (currentNode.NextReference == null)
-                {
-                    break;
-                }
+                currentNode = currentNode.NextReference;
             }
         }
     }
