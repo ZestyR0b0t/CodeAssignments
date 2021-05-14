@@ -13,16 +13,18 @@ namespace Sandbox
         // other things you need to do for your code to work well, as this class implements IDisposable. We'll talk about that some
         // other time.
         private static HttpClient _client = new HttpClient();
-        private static TaskFactory _taskFactory = new TaskFactory();
 
         public void MakeRequests()
         {
             Console.WriteLine("Making web requests. Please wait.");
 
             // LOOK AT THESE IN ORDER!!!! You will confuse yourself otherwise.
-            CreateUser(); 
-            GetUser();
-            GetMtgArtifactTypes();
+            Task createUserTask = CreateUserAsync(); 
+            Task getUserTask = GetUserAsync();
+            Task<string[]> getArtifactsTask = GetMtgArtifactTypesAsync();
+
+            Task.WaitAll(createUserTask, getUserTask, getArtifactsTask); // Wait for all async tasks to finish before proceeding.
+            Console.WriteLine("All web requests complete.");
         }
 
         // https://reqres.in/
@@ -30,7 +32,7 @@ namespace Sandbox
         // that has all sorts of requests it supports, and will give you realistic responses. It doesn't store any data though,
         // so if you "create" a user, it's not going to remember that user.
 
-        private void CreateUser()
+        private async Task CreateUserAsync()
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://reqres.in/api/users");
 
@@ -58,32 +60,19 @@ namespace Sandbox
 
             request.Content = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
-            //The param that gets passed into "StartNew()" below must meet the "Action" delegate signature -- return void w/ no params.
-            // Our "MakeRequestAsync" doesn't match that signature... so we're making a temporary method here (called a "lambda") that
-            // just wraps our "MakeRequestAsync" method, but doesn't return anything or take any params, so it meets the method signature reqs.
-            Action createUserRequest = () =>
-            {
-                MakeRequestAsync(request);
-            }; 
-
-            _taskFactory.StartNew(createUserRequest); // This makes a new thread! 
+            await MakeRequestAsync(request);
         }
 
-        private void GetUser()
+        private async Task GetUserAsync()
         {
             int userId = 2;
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://reqres.in/api/users/{userId}");
             // No content or "body" for this request, since it's a GET.
 
-            Action getUserRequest = () =>
-            {
-                MakeRequestAsync(request);
-            };
-
-            _taskFactory.StartNew(getUserRequest); // This makes a new thread!
+            await MakeRequestAsync(request);
         }
 
-        private async void MakeRequestAsync(HttpRequestMessage request) // async keyword means that this method will run asynchronously IF AND ONLY IF the "await" keyword is also used in it. 
+        private async Task MakeRequestAsync(HttpRequestMessage request) // async keyword means that this method will run asynchronously IF AND ONLY IF the "await" keyword is also used in it. 
         {   
             HttpResponseMessage response = await _client.SendAsync(request);
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -112,41 +101,37 @@ namespace Sandbox
 
         // What if you want to get fancy and parse the response from the server into an object that's
         // a little easier to manage than a big jumbled string of JSON? Newtonsoft.JSON to the rescue!
-        private void GetMtgArtifactTypes()
+        private async Task<string[]> GetMtgArtifactTypesAsync()
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://api.scryfall.com/catalog/artifact-types");
             // No content or "body" for this request, since it's a GET.
 
-            Action getArtifactTypesRequest = async () =>
+            HttpResponseMessage response = await _client.SendAsync(request);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            // Try parsing the response body into our custom class!
+            ScryfallCatalogResponse responseObj = JsonConvert.DeserializeObject<ScryfallCatalogResponse>(responseBody);
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("******");
+            sb.AppendLine($"* REQUEST {request.RequestUri}");
+            sb.AppendLine("* -------");
+            sb.AppendLine($"* STATUS CODE: {(int)response.StatusCode} ({response.StatusCode})");
+            sb.Append("* ARTIFACT TYPES: [");
+            for (int i = 0; i < responseObj.Data.Length; i++)
             {
-                HttpResponseMessage response = await _client.SendAsync(request);
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                // Try parsing the response body into our custom class!
-                ScryfallCatalogResponse responseObj = JsonConvert.DeserializeObject<ScryfallCatalogResponse>(responseBody);
-
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("******");
-                sb.AppendLine($"* REQUEST {request.RequestUri}");
-                sb.AppendLine("* -------");
-                sb.AppendLine($"* STATUS CODE: {(int)response.StatusCode} ({response.StatusCode})");
-                sb.Append("* ARTIFACT TYPES: [");
-                for(int i = 0; i < responseObj.Data.Length; i++)
+                sb.Append(responseObj.Data[i]);
+                if (i < responseObj.Data.Length - 1)
                 {
-                    sb.Append(responseObj.Data[i]);
-                    if (i < responseObj.Data.Length - 1)
-                    {
-                        sb.Append(", ");
-                    }
+                    sb.Append(", ");
                 }
-                sb.AppendLine("]");
-                sb.AppendLine("******");
+            }
+            sb.AppendLine("]");
+            sb.AppendLine("******");
 
-                Console.WriteLine(sb.ToString());
+            Console.WriteLine(sb.ToString());
 
-            };
-
-            _taskFactory.StartNew(getArtifactTypesRequest); // This makes a new thread!
+            return responseObj.Data;
         }
 
         private class ScryfallCatalogResponse
