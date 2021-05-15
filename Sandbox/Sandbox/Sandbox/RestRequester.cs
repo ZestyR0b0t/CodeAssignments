@@ -149,7 +149,7 @@ namespace Sandbox
             _taskFactory.StartNew(getArtifactTypesRequest); // This makes a new thread!
         }
 
-        private class ScryfallCatalogResponse
+        public class ScryfallCatalogResponse
         {
             // If you look at Scryfall's "catalog" endpoints, their responses are all formatted the same way: https://scryfall.com/docs/api/catalogs/spell-types
             // That means we can make an object that should map to any of those responses just fine.
