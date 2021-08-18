@@ -5,7 +5,7 @@ namespace DesignPatterns.Prototype
     public abstract class Monster
     {
         private readonly int _maxHealth;
-        public int Health { get; private set; }
+        public int Health { get; set; }
         public int X { get; protected set; }
         public int Y { get; protected set; }
 
@@ -20,5 +20,7 @@ namespace DesignPatterns.Prototype
             X = x;
             Y = y;
         }
+
+        public abstract Monster Clone();
     }
 }

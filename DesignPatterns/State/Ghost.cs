@@ -19,6 +19,7 @@ namespace DesignPatterns.State
 
         private readonly PacMan _pacMan; // Would be better to pass World into Ghost and retrieve this from there, but this will do for the demo.
         private int _msSinceLastMove = 0;
+        private bool _isScared;
 
         public DrawData Display { get; private set; }
 
@@ -35,20 +36,47 @@ namespace DesignPatterns.State
 
         public void Update(int deltaTimeMs)
         {
-            MoveTowardsPos(_pacMan.Position, deltaTimeMs); // TODO: Only do this when not scared, and not dead
+            _isScared = _pacMan.IsEnergized;
 
-           // TODO: If pac-man has eaten an energizer, get scared
+            if (!_isScared)
+            {
+                Display.Color = ConsoleColor.Magenta;
+                MoveTowardsPos(_pacMan.Position, deltaTimeMs); // TODO: Only do this when not scared, and not dead
+            }
 
-           // TODO: If ghost is scared and pac-man at the same pos as ghost, ghost dies (eval this before moving ghost away from pac-man)
+            // TODO: If pac-man has eaten an energizer, get scared
+            if (_isScared)
+            {
+                Display.Color = ConsoleColor.Cyan;
+                MoveAwayFromPos(_pacMan.Position, deltaTimeMs);
 
-           // TODO: If ghost is dead and is not yet at "home", move towards home
+            }
 
-           // TODO: If ghost is dead and is at home, resurrect ghost
+            // TODO: If ghost is scared and pac-man at the same pos as ghost, ghost dies (eval this before moving ghost away from pac-man)
+            if (_isScared && (Position == _pacMan.Position))
+            {
+                IsDead = true;
+                Display.Color = ConsoleColor.White;
+            }
+
+            // TODO: If ghost is dead and is not yet at "home", move towards home
+            if (IsDead && (Position != World.GhostHome))
+            {
+                MoveTowardsPos(World.GhostHome, deltaTimeMs);
+            }
+
+            // TODO: If ghost is dead and is at home, resurrect ghost
+            if (IsDead && (Position == World.GhostHome))
+            {
+                IsDead = false;
+                _isScared = false;
+            }
         }
 
         // No reason to change the implementation of the method below. Yes, it sucks.
         private void MoveTowardsPos(Vector2 target, int deltaTimeMs)
         {
+
             _msSinceLastMove += deltaTimeMs;
             if (_msSinceLastMove < MsBetweenMovement)
             {
@@ -81,6 +109,40 @@ namespace DesignPatterns.State
                 newY -= 1;
             }
 
+            newX = Math.Clamp(newX, 0, World.Width);
+            newY = Math.Clamp(newY, 0, World.Height);
+            Position = new Vector2(newX, newY);
+        }
+
+        private void MoveAwayFromPos(Vector2 target, int deltaTimeMs)
+        {
+            _msSinceLastMove += deltaTimeMs;
+            if (_msSinceLastMove < MsBetweenMovement)
+            {
+                return;
+            }
+            _msSinceLastMove = 0;
+            Display.PreviousPosition = Position;
+            int newX = Position.X;
+            int newY = Position.Y;
+            int xDelta = target.X - Position.X;
+            int yDelta = target.Y - Position.Y;
+            if (xDelta > 0)
+            {
+                newX -= 1;
+            }
+            else
+            {
+                newX += 1;
+            }
+            if (yDelta > 0)
+            {
+                newY -= 1;
+            }
+            else
+            {
+                newY += 1;
+            }
             newX = Math.Clamp(newX, 0, World.Width);
             newY = Math.Clamp(newY, 0, World.Height);
             Position = new Vector2(newX, newY);

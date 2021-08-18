@@ -39,11 +39,11 @@ namespace DesignPatterns.State
             }
         }
 
-        public IEntity GetEntityAtPos(Vector2 pos)
+        public IEntity GetEntityAtPos<T>(Vector2 pos)
         {
             foreach (IEntity entity in _worldEntities)
             {
-                if (entity.Position == pos)
+                if (entity.Position == pos && entity is T)
                 {
                     return entity;
                 }

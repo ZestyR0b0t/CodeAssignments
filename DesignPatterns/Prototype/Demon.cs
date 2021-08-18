@@ -6,5 +6,16 @@ namespace DesignPatterns.Prototype
         {
             // Nothing special here.
         }
+
+        public override Monster Clone()
+        {
+            var clone = new Demon();
+
+            clone.Health = Health;
+
+            clone.SetPosition(X, Y);
+
+            return clone; 
+        }
     }
 }

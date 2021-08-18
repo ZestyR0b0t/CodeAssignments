@@ -38,7 +38,7 @@ namespace DesignPatterns.State
             }
             else
             {
-                IEntity entity = _world.GetEntityAtPos(Position);
+                IEntity entity = _world.GetEntityAtPos<PowerPellet>(Position);
                 if (entity != null && entity is PowerPellet)
                 {
                     IsEnergized = true;

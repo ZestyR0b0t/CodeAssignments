@@ -8,5 +8,10 @@ namespace DesignPatterns.Prototype
         {
             _spellPower = spellPower;
         }
+
+        public override Monster Clone()
+        {
+            return null;
+        }
     }
 }
