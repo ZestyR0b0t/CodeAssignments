@@ -1,5 +1,4 @@
 ﻿using System;
-using DesignPatterns.Prototype;
 
 namespace DesignPatterns
 {
@@ -7,7 +6,7 @@ namespace DesignPatterns
     {
         static void Main(string[] args)
         {
-            PrototypeDemo.Run();
+            State.Demo.Run();
         }
     }
 }
