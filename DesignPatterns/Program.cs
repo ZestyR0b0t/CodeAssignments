@@ -6,7 +6,7 @@ namespace DesignPatterns
     {
         static void Main(string[] args)
         {
-            State.Demo.Run();
+            ObjectPool.Demo.Run();
         }
     }
 }

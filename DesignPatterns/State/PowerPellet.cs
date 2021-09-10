@@ -1,4 +1,5 @@
 using System;
+using DesignPatterns.Core;
 
 namespace DesignPatterns.State
 {

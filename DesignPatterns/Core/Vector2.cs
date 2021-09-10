@@ -1,6 +1,6 @@
 using System;
 
-namespace DesignPatterns.State
+namespace DesignPatterns.Core
 {
     public struct Vector2 : IEquatable<Vector2>
     {
@@ -38,6 +38,11 @@ namespace DesignPatterns.State
         public static bool operator !=(Vector2 left, Vector2 right)
         {
             return !left.Equals(right);
+        }
+
+        public static Vector2 operator +(Vector2 left, Vector2 right)
+        {
+            return new Vector2(left.X + right.X, left.Y + right.Y);
         }
     }
 }

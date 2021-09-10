@@ -1,6 +1,6 @@
 using System;
 
-namespace DesignPatterns.State
+namespace DesignPatterns.Core
 {
     public class DrawData
     {

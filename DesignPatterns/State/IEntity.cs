@@ -1,3 +1,5 @@
+using DesignPatterns.Core;
+
 namespace DesignPatterns.State
 {
     public interface IEntity
