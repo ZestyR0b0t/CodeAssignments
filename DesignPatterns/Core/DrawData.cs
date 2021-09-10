@@ -8,6 +8,10 @@ namespace DesignPatterns.Core
         public ConsoleColor Color { get; set; }
         public char Character { get; set; }
 
+        public DrawData()
+        {
+
+        }
         public DrawData(ConsoleColor color, char character)
         {
             Color = color;
