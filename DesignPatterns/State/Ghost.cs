@@ -1,5 +1,6 @@
 using System;
-using DesignPatterns.State.StateMachineStuff;using DesignPatterns.Core;
+using DesignPatterns.State.StateMachineStuff;
+using DesignPatterns.Core;
 
 namespace DesignPatterns.State
 {
