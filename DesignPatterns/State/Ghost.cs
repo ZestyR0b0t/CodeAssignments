@@ -1,4 +1,5 @@
 using System;
+using DesignPatterns.State.StateMachineStuff;
 
 namespace DesignPatterns.State
 {
@@ -13,13 +14,20 @@ namespace DesignPatterns.State
         // Once the ghost has reached "home", it should come back to life and resume its normal chase behavior.
         //
         // By the way, PacMan is invincible in this version, so don't worry about killing him.
-        private const char DeadChar = '%';
-        private const char DefaultChar = 'Ω';
         private const int MsBetweenMovement = 500; // Rather than representing speed the right way, we're doing it this way :painlaugh:
 
-        private readonly PacMan _pacMan; // Would be better to pass World into Ghost and retrieve this from there, but this will do for the demo.
+        public PacMan PacMan { get; private set; } // Would be better to pass World into Ghost and retrieve this from there, but this will do for the demo.
         private int _msSinceLastMove = 0;
         private bool _isScared;
+
+        public enum States
+        {
+            Chase, 
+            Scared, 
+            Dead
+        }
+
+        public StateMachine<Ghost, States> MyStateMachine { get; set; }
 
         public DrawData Display { get; private set; }
 
@@ -29,52 +37,19 @@ namespace DesignPatterns.State
 
         public Ghost(PacMan pacMan)
         {
-            _pacMan = pacMan;
+            PacMan = pacMan;
             Position = World.GhostHome;
-            Display = new DrawData(ConsoleColor.Magenta, DefaultChar);
+            Display = new DrawData();
+            MyStateMachine = new StateMachine<Ghost, States>(States.Chase, this);
         }
 
         public void Update(int deltaTimeMs)
         {
-            _isScared = _pacMan.IsEnergized;
-
-            if (!_isScared)
-            {
-                Display.Color = ConsoleColor.Magenta;
-                MoveTowardsPos(_pacMan.Position, deltaTimeMs); // TODO: Only do this when not scared, and not dead
-            }
-
-            // TODO: If pac-man has eaten an energizer, get scared
-            if (_isScared)
-            {
-                Display.Color = ConsoleColor.Cyan;
-                MoveAwayFromPos(_pacMan.Position, deltaTimeMs);
-
-            }
-
-            // TODO: If ghost is scared and pac-man at the same pos as ghost, ghost dies (eval this before moving ghost away from pac-man)
-            if (_isScared && (Position == _pacMan.Position))
-            {
-                IsDead = true;
-                Display.Color = ConsoleColor.White;
-            }
-
-            // TODO: If ghost is dead and is not yet at "home", move towards home
-            if (IsDead && (Position != World.GhostHome))
-            {
-                MoveTowardsPos(World.GhostHome, deltaTimeMs);
-            }
-
-            // TODO: If ghost is dead and is at home, resurrect ghost
-            if (IsDead && (Position == World.GhostHome))
-            {
-                IsDead = false;
-                _isScared = false;
-            }
+            MyStateMachine.CurrentState.Update(this, deltaTimeMs);
         }
 
         // No reason to change the implementation of the method below. Yes, it sucks.
-        private void MoveTowardsPos(Vector2 target, int deltaTimeMs)
+        public void MoveTowardsPos(Vector2 target, int deltaTimeMs)
         {
 
             _msSinceLastMove += deltaTimeMs;
@@ -114,7 +89,7 @@ namespace DesignPatterns.State
             Position = new Vector2(newX, newY);
         }
 
-        private void MoveAwayFromPos(Vector2 target, int deltaTimeMs)
+        public void MoveAwayFromPos(Vector2 target, int deltaTimeMs)
         {
             _msSinceLastMove += deltaTimeMs;
             if (_msSinceLastMove < MsBetweenMovement)
