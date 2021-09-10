@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesignPatterns.State.StateMachineStuff
 {
-    public class GhostStateChase : BaseState
+    public class GhostStateChase : BaseState<Ghost>
     {
         private const char DefaultChar = 'Ω';
 
@@ -22,7 +22,7 @@ namespace DesignPatterns.State.StateMachineStuff
 
             if (ghost.PacMan.IsEnergized)
             {
-                ghost.MyStateMachine.ChangeState(StateMachine.States.Scared, ghost);
+                ghost.MyStateMachine.ChangeState(Ghost.States.Scared, ghost);
             }
         }
     }

@@ -18,7 +18,6 @@ namespace DesignPatterns.State
 
         public PacMan PacMan { get; private set; } // Would be better to pass World into Ghost and retrieve this from there, but this will do for the demo.
         private int _msSinceLastMove = 0;
-        private bool _isScared;
 
         public enum States
         {

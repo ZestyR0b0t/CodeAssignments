@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesignPatterns.State.StateMachineStuff
 {
-    public class GhostStateDead : BaseState
+    public class GhostStateDead : BaseState<Ghost>
     {
         private const char DeadChar = '%';
 
@@ -20,7 +20,7 @@ namespace DesignPatterns.State.StateMachineStuff
 
             if(ghost.Position == World.GhostHome)
             {
-                ghost.MyStateMachine.ChangeState(StateMachine.States.Chase, ghost);
+                ghost.MyStateMachine.ChangeState(Ghost.States.Chase, ghost);
             }
         }
     }
