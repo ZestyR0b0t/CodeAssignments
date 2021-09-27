@@ -20,6 +20,8 @@ namespace DesignPatterns.ObjectPool
         private int _msSinceLastSpawn = 0;
         private readonly ISet<Particle> _pendingRemoval = new HashSet<Particle>();
 
+        private ParticlePool _particlePool = new ParticlePool(1); 
+
         public ISet<Particle> Particles { get; } = new HashSet<Particle>();
 
         public bool IsFinished { get; private set; }
@@ -61,6 +63,10 @@ namespace DesignPatterns.ObjectPool
                 foreach (Particle particle in _pendingRemoval)
                 {
                     Particles.Remove(particle);
+
+                    particle.Reset();
+
+                    _particlePool.ReturnParticleToPool(particle);
                 }
 
                 _pendingRemoval.Clear();
@@ -80,7 +86,14 @@ namespace DesignPatterns.ObjectPool
                 return; // Too early to spawn
             }
 
-            Particles.Add(new Particle());
+            Particle particle = _particlePool.GetAParticle();
+            
+            if (particle == null)
+            {
+                return;
+            }
+
+            Particles.Add(particle);
             _msSinceLastSpawn = 0;
             _spawnCount++;
         }
