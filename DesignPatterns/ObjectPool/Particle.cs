@@ -3,7 +3,7 @@ using DesignPatterns.Core;
 
 namespace DesignPatterns.ObjectPool
 {
-    public class Particle
+    public class Particle : IEntity
     {
         private const int MsBetweenMovement = 50;
         private static readonly Vector2 Direction = new Vector2(0, -1);

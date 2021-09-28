@@ -1,14 +1,15 @@
 using System;
-using DesignPatterns.Core;
+using System.Collections.Generic;
 
-namespace DesignPatterns.ObjectPool
+namespace DesignPatterns.Core
 {
     public class Screen
     {
         public const int Width = 75;
         public const int Height = 25;
 
-        private static readonly Vector2 TopLeft = new Vector2(0, 0);
+        public static readonly Vector2 TopLeft = new Vector2(0, 0);
+        public static readonly Vector2 BottomRight = new Vector2(Width, Height);
         private const ConsoleColor BorderColor = ConsoleColor.Blue;
 
         public Screen()
@@ -16,7 +17,12 @@ namespace DesignPatterns.ObjectPool
             Console.CursorVisible = false;
         }
 
-        public void Draw()
+        public void Draw<T>(T entity) where T : IEntity
+        {
+            Draw(new HashSet<T>(){entity});
+        }
+
+        public void Draw<T>(ISet<T> entities) where T : IEntity
         {
             Console.SetCursorPosition(TopLeft.X, TopLeft.Y);
             Console.ForegroundColor = BorderColor;
@@ -49,19 +55,19 @@ namespace DesignPatterns.ObjectPool
             Console.Write('╝');
 
             // draw stuff in world
-            foreach (Particle p in ParticleMgr.Instance.Particles)
+            foreach (IEntity e in entities)
             {
-                if (!p.IsDead)
+                if (!e.IsDead)
                 {
-                    Console.SetCursorPosition( p.Position.X + 1, p.Position.Y + 1);
-                    Console.ForegroundColor = p.Display.Color;
-                    Console.Write(p.Display.Character);
+                    Console.SetCursorPosition( e.Position.X + 1, e.Position.Y + 1);
+                    Console.ForegroundColor = e.Display.Color;
+                    Console.Write(e.Display.Character);
                 }
 
                 // erase old pos
-                if (p.Display.PreviousPosition.Initialized && p.Position != p.Display.PreviousPosition)
+                if (e.Display.PreviousPosition.Initialized && e.Position != e.Display.PreviousPosition)
                 {
-                    Console.SetCursorPosition( p.Display.PreviousPosition.X + 1, p.Display.PreviousPosition.Y + 1);
+                    Console.SetCursorPosition( e.Display.PreviousPosition.X + 1, e.Display.PreviousPosition.Y + 1);
                     Console.Write(' ');
                     // FIXME: Figure out a way to make this not erase other entities if they happen to be in the previous position
                 }

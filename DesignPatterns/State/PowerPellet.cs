@@ -9,6 +9,7 @@ namespace DesignPatterns.State
 
         public DrawData Display { get; private set; }
         public Vector2 Position { get; private set; }
+        public bool IsDead => false;
 
         public PowerPellet(int x, int y)
         {

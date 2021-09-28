@@ -16,6 +16,8 @@ namespace DesignPatterns.State
 
         public Vector2 Position { get; private set; }
 
+        public bool IsDead => false;
+
         public bool IsEnergized { get; private set; }
 
         public PacMan(World world)

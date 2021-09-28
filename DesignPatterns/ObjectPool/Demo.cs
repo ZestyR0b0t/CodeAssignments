@@ -1,4 +1,5 @@
 using System;
+using DesignPatterns.Core;
 using DesignPatterns.State;
 
 namespace DesignPatterns.ObjectPool
@@ -19,7 +20,7 @@ namespace DesignPatterns.ObjectPool
                 _lastUpdate = now;
 
                 ParticleMgr.Instance.Update(deltaTimeMs);
-                screen.Draw();
+                screen.Draw(ParticleMgr.Instance.Particles);
             }
         }
     }
